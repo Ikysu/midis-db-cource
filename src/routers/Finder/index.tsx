@@ -2,8 +2,6 @@ import "./style.module.css";
 import React from "react";
 
 export function Finder() {
-  const [value, setValue] = React.useState(0);
-
   return (
     <div className="Finder">
       <h1>Vite + React</h1>

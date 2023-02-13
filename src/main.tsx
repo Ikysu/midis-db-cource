@@ -12,29 +12,36 @@ import {
 } from "@mui/icons-material";
 
 import { Navigator } from './component';
-import { Finder, Favorites } from './routers';
+import { Finder, Favorites, Client } from './routers';
 
 export const Pages = [
   {
     label:"Поиск",
     icon: <Search />,
     path: "/",
-    element: <Finder />
+    element: <Finder />,
+    nav: true
   },
   {
     label:"Избранное",
     icon: <Favorite />,
     path: "/fav",
-    element: <Favorites />
+    element: <Favorites />,
+    nav: true
+  },
+  {
+    label:"Client",
+    path: "/client/:client_id",
+    element: <Client />
   }
 ]
 
-const router = createBrowserRouter(Pages.map(({path, element}, index)=>{
+const router = createBrowserRouter(Pages.map(({path, element, nav}, index)=>{
   return {
     path,
-    element: (
+    element: nav ? (
       <Navigator element={element} index={index} />
-    )
+    ) : element
   }
 }));
 
