@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import {
@@ -15,8 +15,9 @@ import {
   Favorite
 } from "@mui/icons-material";
 import { Paper, BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { Navigator } from './component';
 
-const Pages = [
+export const Pages = [
   {
     label:"Поиск",
     icon: <Search />,
@@ -31,31 +32,11 @@ const Pages = [
   }
 ]
 
-
-
 const router = createBrowserRouter(Pages.map(({path, element}, index)=>{
   return {
     path,
     element: (
-      <div>
-        {element}
-        <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-          <BottomNavigation
-          showLabels
-          value={index}
-          onChange={(event, newValue)=>{
-            const navigate = useNavigate();
-            navigate(Pages[newValue].path, {replace: true});
-          }}
-        >
-          {Pages.map(({label, icon})=>{
-            return (
-              <BottomNavigationAction label={label} icon={icon} />
-            )
-          })}
-        </BottomNavigation>
-        </Paper>
-      </div>
+      <Navigator element={element} index={index} />
     )
   }
 }));
