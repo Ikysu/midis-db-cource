@@ -6,29 +6,26 @@ import {
   RouterProvider,
   useNavigate
 } from "react-router-dom";
-
-import { useState } from "react";
-
-import { Index } from './routers';
 import {
   Search,
   Favorite
 } from "@mui/icons-material";
-import { Paper, BottomNavigation, BottomNavigationAction } from '@mui/material';
+
 import { Navigator } from './component';
+import { Finder, Favorites } from './routers';
 
 export const Pages = [
   {
     label:"Поиск",
     icon: <Search />,
     path: "/",
-    element: <Index />
+    element: <Finder />
   },
   {
     label:"Избранное",
     icon: <Favorite />,
     path: "/fav",
-    element: <Index />
+    element: <Favorites />
   }
 ]
 

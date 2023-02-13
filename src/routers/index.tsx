@@ -1,2 +1,2 @@
-export * from './Index';
-//export * from './Favorites';
+export * from './Finder';
+export * from './Favorites';
