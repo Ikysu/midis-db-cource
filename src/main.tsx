@@ -15,7 +15,7 @@ import {
 } from "@mui/icons-material";
 
 import { Navigator } from "./component";
-import { ContractList, Favorites, Client, ClientList, DealerList } from "./routers";
+import { ContractList, Client, ClientList, DealerList } from "./routers";
 
 export type Item = {
   icon: JSX.Element;

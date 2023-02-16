@@ -17,17 +17,11 @@ import { useNavigate } from "react-router-dom";
 import { mainList } from "../../main";
 import { listItems } from "./listItems";
 
-export function Navigator({
-  index,
-  element,
-}: {
-  index: number;
-  element: JSX.Element;
-}) {
+export function Navigator({ element }: { element: JSX.Element }) {
   const navigate = useNavigate();
 
   return (
-    <div className={`page-${index}`}>
+    <div>
       <Drawer variant="permanent">
         <Toolbar
           sx={{
