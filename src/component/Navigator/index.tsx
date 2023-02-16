@@ -1,32 +1,63 @@
-import { Paper, BottomNavigation, BottomNavigationAction } from "@mui/material";
+import { Copyright } from "@mui/icons-material";
+import {
+  Paper,
+  BottomNavigation,
+  BottomNavigationAction,
+  Drawer,
+  Divider,
+  IconButton,
+  List,
+  Toolbar,
+  Box,
+  Container,
+  Grid,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import { Pages } from "../../main";
+import { mainList } from "../../main";
+import { listItems } from "./listItems";
 
-export function Navigator({index, element}: {index: number, element: JSX.Element}) {
+export function Navigator({
+  index,
+  element,
+}: {
+  index: number;
+  element: JSX.Element;
+}) {
   const navigate = useNavigate();
 
   return (
     <div className={`page-${index}`}>
-      {element}
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-        <BottomNavigation
-          showLabels
-          value={index}
-          onChange={(event, newValue)=>{
-            navigate(Pages[newValue].path, {replace: true})
-            
+      <Drawer variant="permanent">
+        <Toolbar
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            px: [1],
           }}
-        >
-          {Pages.map(({label, icon}, i)=>{
-            return (
-              <BottomNavigationAction key={`page-${index}-${i}`} label={label} icon={icon} />
-            )
-          })}
-        </BottomNavigation>
-      </Paper>
+        ></Toolbar>
+        <Divider />
+        <List component="nav">
+          {listItems(mainList, navigate)}
+          <Divider sx={{ my: 1 }} />
+        </List>
+      </Drawer>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          height: "100vh",
+          overflow: "auto",
+        }}
+      >
+        <Toolbar />
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          {element}
+        </Container>
+      </Box>
     </div>
-  )
+  );
 }
 
 export default Navigator;

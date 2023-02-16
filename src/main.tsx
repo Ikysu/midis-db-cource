@@ -1,50 +1,63 @@
-import React, { useCallback } from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'
+import React, { useCallback } from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
 import {
   createBrowserRouter,
   RouterProvider,
-  useNavigate
+  useNavigate,
 } from "react-router-dom";
 import {
   Search,
-  Favorite
+  Favorite,
+  Assignment,
+  People,
+  ShoppingCart,
 } from "@mui/icons-material";
 
-import { Navigator } from './component';
-import { Finder, Favorites, Client } from './routers';
+import { Navigator } from "./component";
+import { ContractList, Favorites, Client, ClientList, DealerList } from "./routers";
 
-export const Pages = [
+export type Item = {
+  icon: JSX.Element;
+  element: JSX.Element;
+  label: string;
+  path: string;
+  nav: boolean;
+};
+
+export const mainList: Item[] = [
   {
-    label:"Поиск",
-    icon: <Search />,
+    icon: <Assignment />,
+    element: <ContractList />,
+    label: "Договора",
     path: "/",
-    element: <Finder />,
-    nav: true
+    nav: true,
   },
   {
-    label:"Избранное",
-    icon: <Favorite />,
-    path: "/fav",
-    element: <Favorites />,
-    nav: true
+    icon: <ShoppingCart />,
+    element: <DealerList />,
+    label: "Дилеры",
+    path: "/dealers",
+    nav: true,
   },
   {
-    label:"Client",
-    path: "/client/:client_id",
-    element: <Client />
-  }
-]
+    icon: <People />,
+    element: <ClientList />,
+    label: "Клиенты",
+    path: "/clients",
+    nav: true,
+  },
+];
 
-const router = createBrowserRouter(Pages.map(({path, element, nav}, index)=>{
-  return {
-    path,
-    element: nav ? (
-      <Navigator element={element} index={index} />
-    ) : element
-  }
-}));
+const router = createBrowserRouter(
+  mainList.map(({ path, element, nav }, index) => {
+    return {
+      path,
+      element: nav ? <Navigator element={element} /> : element,
+    };
+  })
+);
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <RouterProvider router={router} />
-)
+);
