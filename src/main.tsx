@@ -16,6 +16,7 @@ import {
 
 import { Navigator } from "./component";
 import { ContractList, Client, ClientList, DealerList } from "./routers";
+import { createTheme, ThemeProvider } from "@mui/material";
 
 export type Item = {
   icon: JSX.Element;
@@ -49,15 +50,23 @@ export const mainList: Item[] = [
   },
 ];
 
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
+
 const router = createBrowserRouter(
-  mainList.map(({ path, element, nav }, index) => {
+  mainList.map(({ path, element, nav, label }, index) => {
     return {
       path,
-      element: nav ? <Navigator element={element} /> : element,
+      element: nav ? <Navigator element={element} title={label} /> : element,
     };
   })
 );
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <RouterProvider router={router} />
+  <ThemeProvider theme={darkTheme}>
+    <RouterProvider router={router} />
+  </ThemeProvider>
 );

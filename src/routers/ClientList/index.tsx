@@ -1,5 +1,55 @@
+import { TableCell } from "@mui/material";
+import { useState } from "react";
+import Tbl from "../../component/Tbl";
+import { getClientList } from "../../lib/api";
+
+export interface IClientList {
+  id: number;
+  фамилия: string;
+  имя: string;
+  отчество: string;
+  город: string;
+  адрес: string;
+  телефон: string;
+}
+
 export function ClientList() {
-  return <h1>ClientList</h1>;
+  const [list, setList] = useState<IClientList[] | null>(null);
+
+  if (!list) {
+    getClientList().then((data: any) => {
+      if (data && !data.status) setList(data);
+    });
+  }
+
+  return (
+    <Tbl
+      rows={[
+        <TableCell>ID</TableCell>,
+        <TableCell>ФИО</TableCell>,
+        <TableCell>Город</TableCell>,
+        <TableCell>Адрес</TableCell>,
+        <TableCell>Телефон</TableCell>,
+      ]}
+      data={
+        list
+          ? list.map(
+              ({ id, фамилия, имя, отчество, город, адрес, телефон }) => {
+                return (
+                  <>
+                    <TableCell>{id}</TableCell>
+                    <TableCell>{`${фамилия} ${имя[0]}.${отчество[0]}.`}</TableCell>
+                    <TableCell>{город}</TableCell>
+                    <TableCell>{адрес}</TableCell>
+                    <TableCell>{телефон}</TableCell>
+                  </>
+                );
+              }
+            )
+          : []
+      }
+    />
+  );
 }
 
 export default ClientList;

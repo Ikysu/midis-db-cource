@@ -11,46 +11,62 @@ import {
   Box,
   Container,
   Grid,
+  AppBar,
+  Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import { mainList } from "../../main";
 import { listItems } from "./listItems";
 
-export function Navigator({ element }: { element: JSX.Element }) {
+const drawerWidth = 240;
+
+export function Navigator({
+  element,
+  title,
+}: {
+  element: JSX.Element;
+  title: string;
+}) {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <Drawer variant="permanent">
-        <Toolbar
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            px: [1],
-          }}
-        ></Toolbar>
-        <Divider />
-        <List component="nav">
-          {listItems(mainList, navigate)}
-          <Divider sx={{ my: 1 }} />
-        </List>
-      </Drawer>
-      <Box
-        component="main"
+    <Box sx={{ display: "flex" }}>
+      <AppBar
+        position="fixed"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <Toolbar>
+          <Typography variant="h6" noWrap component="div">
+            {title}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer
         sx={{
-          flexGrow: 1,
-          height: "100vh",
-          overflow: "auto",
+          width: drawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
         }}
+        variant="permanent"
+        anchor="left"
       >
         <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          {element}
-        </Container>
+        <Box sx={{ overflow: "auto" }}>
+          <List component="nav">
+            {listItems(mainList, navigate)}
+            <Divider sx={{ my: 1 }} />
+          </List>
+        </Box>
+      </Drawer>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Toolbar />
+        {element}
       </Box>
-    </div>
+    </Box>
   );
 }
 
