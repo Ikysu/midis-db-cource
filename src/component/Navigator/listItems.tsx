@@ -14,11 +14,11 @@ import { Item } from "../../main";
 export function listItems(items: Item[], navigate: NavigateFunction) {
   return (
     <React.Fragment>
-      {items.map(({ icon, label, path }: Item) => {
+      {items.map(({ icon, label, children }: Item) => {
         return (
           <ListItemButton
             onClick={() => {
-              navigate(path);
+              navigate(children[0].path);
             }}
           >
             <ListItemIcon>{icon}</ListItemIcon>

@@ -24,6 +24,7 @@ export function ClientList() {
 
   return (
     <Tbl
+      whatSearch="client"
       rows={[
         <TableCell>ID</TableCell>,
         <TableCell>ФИО</TableCell>,
@@ -35,7 +36,9 @@ export function ClientList() {
         list
           ? list.map(
               ({ id, фамилия, имя, отчество, город, адрес, телефон }) => {
-                return (
+                return {
+                  find:`id:${id} ${фамилия} ${имя} ${отчество} ${город} ${адрес} ${телефон}`,
+                  data:(
                   <>
                     <TableCell>{id}</TableCell>
                     <TableCell>{`${фамилия} ${имя[0]}.${отчество[0]}.`}</TableCell>
@@ -43,7 +46,7 @@ export function ClientList() {
                     <TableCell>{адрес}</TableCell>
                     <TableCell>{телефон}</TableCell>
                   </>
-                );
+                )};
               }
             )
           : []

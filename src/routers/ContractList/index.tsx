@@ -29,6 +29,7 @@ export function ContractList() {
 
   return (
     <Tbl
+      whatSearch="contract"
       rows={[
         <TableCell>ID</TableCell>,
         <TableCell>ID Клиента</TableCell>,
@@ -46,15 +47,18 @@ export function ContractList() {
                 дата_заключения_договора,
                 цена_продажи,
               }) => {
-                return (
+                let date = new Date(дата_заключения_договора);
+                return {
+                  find:`id:${id} cid:${клиентId} did:${дилерId} ${date.toLocaleString()} ${цена_продажи}`,
+                  data:(
                   <>
                     <TableCell>{id}</TableCell>
                     <TableCell>{клиентId}</TableCell>
                     <TableCell>{дилерId}</TableCell>
-                    <TableCell>{дата_заключения_договора}</TableCell>
+                    <TableCell>{date.toLocaleString()}</TableCell>
                     <TableCell>{цена_продажи}</TableCell>
                   </>
-                );
+                )}
               }
             )
           : []

@@ -14,11 +14,14 @@ import {
   Paper,
   Card,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export function Tbl(props: any) {
-  const { rows, data }: { rows: any; data: any } = props;
+  const { rows, data, whatSearch }: { rows: any; data: any, whatSearch: string } = props;
+
+  var [filter, setFilter] = useState<string>("");  
+
   return (
     <React.Fragment>
       <Paper
@@ -32,10 +35,14 @@ export function Tbl(props: any) {
       >
         <InputBase
           sx={{ ml: 1, flex: 1 }}
-          placeholder="Search Google Maps"
-          inputProps={{ "aria-label": "search google maps" }}
+          placeholder="Search"
+          id="search"
+          inputProps={{ maxLength: 64 }}
         />
-        <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+        <IconButton type="button" sx={{ p: "10px" }} aria-label="search" onClick={()=>{
+          const input = document.getElementById("search") as HTMLInputElement;
+          setFilter(input?.value ?? "")
+        }}>
           <Search />
         </IconButton>
         <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
@@ -50,9 +57,9 @@ export function Tbl(props: any) {
             <TableRow>{rows}</TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row: any, index: number) => (
-              <TableRow key={index}>{row}</TableRow>
-            ))}
+            {data.filter((row:any)=>row.find.indexOf(filter) != -1).map((row: any, index: number) => {
+              return (<TableRow key={index}>{row.data}</TableRow>)
+            })}
           </TableBody>
         </Table>
       </Card>

@@ -24,6 +24,7 @@ export function DealerList() {
 
   return (
     <Tbl
+      whatSearch="dealer"
       rows={[
         <TableCell>ID</TableCell>,
         <TableCell>ФИО</TableCell>,
@@ -33,14 +34,16 @@ export function DealerList() {
       data={
         list
           ? list.map(({ id, фамилия, имя, отчество, адрес, телефон }) => {
-              return (
+              return {
+                find:`id:${id} ${фамилия} ${имя} ${отчество} ${адрес} ${телефон}`,
+                data:(
                 <>
                   <TableCell>{id}</TableCell>
                   <TableCell>{`${фамилия} ${имя[0]}.${отчество[0]}.`}</TableCell>
                   <TableCell>{адрес}</TableCell>
                   <TableCell>{телефон}</TableCell>
                 </>
-              );
+              )};
             })
           : []
       }

@@ -1,5 +1,5 @@
 export const APIEndPoint =
-  "https://ikysu-humble-space-pancake-77gw7pg6jq6hx5jw-10000.preview.app.github.dev";
+  "https://vite-api.iky.su";
 
 async function req(
   method: "POST" | "PUT" | "GET" | "DELETE",
@@ -28,8 +28,9 @@ async function req(
     return { status, error };
   }
 }
+
 export async function getDealerList() {
-  const dealerListReponse = await req("GET", "/dealer");
+  const dealerListReponse = await req("GET", "/dealer/list?limit=100");
   if (!dealerListReponse.status) {
     return dealerListReponse;
   } else {
@@ -38,12 +39,33 @@ export async function getDealerList() {
   }
 }
 
+export async function getDealer(id: number) {
+  const dealerReponse = await req("GET", "/dealer?id="+id);
+  if (!dealerReponse.status) {
+    return dealerReponse;
+  } else {
+    alert(`${dealerReponse.status} | ${dealerReponse.error}`);
+    return false;
+  }
+}
+
+
 export async function getClientList() {
-  const clientListResponse = await req("GET", "/client");
+  const clientListResponse = await req("GET", "/client/list?limit=100");
   if (!clientListResponse.status) {
     return clientListResponse;
   } else {
     alert(`${clientListResponse.status} | ${clientListResponse.error}`);
+    return false;
+  }
+}
+
+export async function getClient(id: number) {
+  const clientReponse = await req("GET", "/client?id="+id);
+  if (!clientReponse.status) {
+    return clientReponse;
+  } else {
+    alert(`${clientReponse.status} | ${clientReponse.error}`);
     return false;
   }
 }

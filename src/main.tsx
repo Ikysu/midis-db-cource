@@ -15,38 +15,61 @@ import {
 } from "@mui/icons-material";
 
 import { Navigator } from "./component";
-import { ContractList, Client, ClientList, DealerList } from "./routers";
+import { ContractList, Client, ClientList, DealerList, Dealer, Contract } from "./routers";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 export type Item = {
   icon: JSX.Element;
-  element: JSX.Element;
   label: string;
-  path: string;
-  nav: boolean;
+  children: any;
 };
 
 export const mainList: Item[] = [
   {
     icon: <Assignment />,
-    element: <ContractList />,
-    label: "Договора",
-    path: "/",
-    nav: true,
+    label: "Контракты",
+    children: [
+      {
+        index: true,
+        element: <Navigator element={<ContractList />} title={"Контракты"} />,
+        path: "/",
+      },
+      {
+        path: '/contract/:contract_id',
+        element: <Navigator element={<Contract />} title={"Контракт"} />,
+      },
+    ]
+    
   },
   {
     icon: <ShoppingCart />,
-    element: <DealerList />,
     label: "Дилеры",
-    path: "/dealers",
-    nav: true,
+    children: [
+      {
+        index: true,
+        element: <Navigator element={<DealerList />} title={"Дилеры"} />,
+        path: "/dealers",
+      },
+      {
+        path: '/dealers/:dealer_id',
+        element: <Navigator element={<Dealer />} title={"Дилер"} />,
+      },
+    ]
   },
   {
     icon: <People />,
-    element: <ClientList />,
     label: "Клиенты",
-    path: "/clients",
-    nav: true,
+    children: [
+      {
+        index: true,
+        element: <Navigator element={<ClientList />} title={"Клиенты"} />,
+        path: "/clients"
+      },
+      {
+        path: '/clients/:client_id',
+        element: <Navigator element={<Client />} title={"Клиент"} />,
+      },
+    ]
   },
 ];
 
@@ -57,12 +80,7 @@ const darkTheme = createTheme({
 });
 
 const router = createBrowserRouter(
-  mainList.map(({ path, element, nav, label }, index) => {
-    return {
-      path,
-      element: nav ? <Navigator element={element} title={label} /> : element,
-    };
-  })
+  mainList
 );
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
