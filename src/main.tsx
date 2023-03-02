@@ -51,7 +51,7 @@ export const mainList: Item[] = [
         path: "/dealers",
       },
       {
-        path: '/dealers/:dealer_id',
+        path: '/dealer/:dealer_id',
         element: <Navigator element={<Dealer />} title={"Дилер"} />,
       },
     ]
@@ -66,7 +66,7 @@ export const mainList: Item[] = [
         path: "/clients"
       },
       {
-        path: '/clients/:client_id',
+        path: '/client/:client_id',
         element: <Navigator element={<Client />} title={"Клиент"} />,
       },
     ]

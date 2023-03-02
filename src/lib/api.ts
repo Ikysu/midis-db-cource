@@ -29,53 +29,41 @@ async function req(
   }
 }
 
-export async function getDealerList() {
-  const dealerListReponse = await req("GET", "/dealer/list?limit=100");
-  if (!dealerListReponse.status) {
-    return dealerListReponse;
+async function lr(method: string, url: string, data: any = undefined) {
+  const response = await req("PUT", "/dealer", data);
+  if (!response.status) {
+    return response;
   } else {
-    alert(`${dealerListReponse.status} | ${dealerListReponse.error}`);
+    alert(`${response.status} | ${response.error}`);
     return false;
   }
+} 
+
+export async function addDealer() {
+  return lr("PUT", "/dealer");
+}
+
+export async function getDealerList() {
+  return lr("GET", "/dealer/list");
 }
 
 export async function getDealer(id: number) {
-  const dealerReponse = await req("GET", "/dealer?id="+id);
-  if (!dealerReponse.status) {
-    return dealerReponse;
-  } else {
-    alert(`${dealerReponse.status} | ${dealerReponse.error}`);
-    return false;
-  }
+  return lr("GET", "/dealer?id="+id);
 }
 
 
 export async function getClientList() {
-  const clientListResponse = await req("GET", "/client/list?limit=100");
-  if (!clientListResponse.status) {
-    return clientListResponse;
-  } else {
-    alert(`${clientListResponse.status} | ${clientListResponse.error}`);
-    return false;
-  }
+  return lr("GET", "/client/list");
 }
 
 export async function getClient(id: number) {
-  const clientReponse = await req("GET", "/client?id="+id);
-  if (!clientReponse.status) {
-    return clientReponse;
-  } else {
-    alert(`${clientReponse.status} | ${clientReponse.error}`);
-    return false;
-  }
+  return lr("GET", "/client?id="+id);
 }
 
 export async function getContractList() {
-  const contractListResponse = await req("GET", "/contract");
-  if (!contractListResponse.status) {
-    return contractListResponse;
-  } else {
-    alert(`${contractListResponse.status} | ${contractListResponse.error}`);
-    return false;
-  }
+  return lr("GET", "/contract/list");
+}
+
+export async function getContract(id: number) {
+  return lr("GET", "/contract?id="+id);
 }
