@@ -50,6 +50,15 @@ export function Contract() {
     })
   }
 
+  function formatDate(date: Date) {
+    console.log(+date)
+    let month = `${date.getMonth()+1}`,
+        day = `${date.getDay()+1}`;
+    if(month.length!=2) month="0"+month;
+    if(day.length!=2) day="0"+day;
+    return date.getFullYear()+"-"+month+"-"+day
+  }
+
   return data ? (
     <>
       <Typography variant="h3" component="h4" color="white" mb="1em">
@@ -57,12 +66,9 @@ export function Contract() {
       </Typography>
 
       <Box
-        component="form"
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
         }}
-        noValidate
-        autoComplete="off"
       >
         <TextField
           id="outlined"
@@ -85,18 +91,15 @@ export function Contract() {
       
 
       <Box
-        component="form"
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
         }}
-        noValidate
-        autoComplete="off"
       >
       <TextField
         id="outlined"
         type="date"
         label="Дата заключения договора"
-        value={new Date(data.дата_заключения_договора)}
+        value={formatDate(new Date(data.дата_заключения_договора))}
         onChange={(e) => {
           edit.дата_заключения_договора=`FROM_UNIXTIME(${Math.floor((+new Date(e.target.value))/1000)})`
         }}
@@ -106,7 +109,7 @@ export function Contract() {
         id="outlined"
         type="date"
         label="Дата продажи"
-        value={new Date(data.дата_продажи)}
+        value={formatDate(new Date(data.дата_продажи))}
         onChange={(e) => {
           edit.дата_продажи=`FROM_UNIXTIME(${Math.floor((+new Date(e.target.value))/1000)})`
         }}
@@ -115,18 +118,15 @@ export function Contract() {
       </Box>
 
       <Box
-        component="form"
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
         }}
-        noValidate
-        autoComplete="off"
       >
         <TextField
           id="outlined"
           type="date"
           label="Дата выпуска"
-          value={new Date(data.дата_выпуска)}
+          value={formatDate(new Date(data.дата_выпуска))}
           onChange={(e) => {
             edit.дата_выпуска=`FROM_UNIXTIME(${Math.floor((+new Date(e.target.value))/1000)})`
           }}
@@ -153,12 +153,9 @@ export function Contract() {
       </Box>
 
       <Box
-        component="form"
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
         }}
-        noValidate
-        autoComplete="off"
       >
 
         <TextField
@@ -183,13 +180,10 @@ export function Contract() {
       </Box>
 
       <Box
-        component="form"
         sx={{
           '& .MuiTextField-root': { m: 1 },
         }}
-        noValidate
-        autoComplete="off"
-        fullWidth
+        
       ><TextField
           fullWidth 
           id="outlined"
@@ -207,12 +201,9 @@ export function Contract() {
       
 
       <Box
-        component="form"
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
         }}
-        noValidate
-        autoComplete="off"
       ><Button onClick={save}>Save</Button></Box>
       
     </>
@@ -252,13 +243,13 @@ export function ContractList() {
               }) => {
                 let date = new Date(дата_заключения_договора);
                 return {
-                  find:`id:${id} cid:${клиентId} did:${дилерId} ${date.toLocaleString()} ${цена_продажи}`.toLowerCase(),
+                  find:`id:${id} cid:${клиентId} did:${дилерId} ${date.toLocaleDateString()} ${цена_продажи}`.toLowerCase(),
                   data:(
                   <>
                     <TableCell><Link to={`/contract/${id}`}>#{id}</Link></TableCell>
                     <TableCell>{клиентId}</TableCell>
                     <TableCell>{дилерId}</TableCell>
-                    <TableCell>{date.toLocaleString()}</TableCell>
+                    <TableCell>{date.toLocaleDateString()}</TableCell>
                     <TableCell>{цена_продажи}</TableCell>
                   </>
                 )}
@@ -312,12 +303,9 @@ export function AddContractDialog(open: any, close: any) {
       <DialogTitle>Добавить контракт</DialogTitle>
       <DialogContent>
         <Box
-          component="form"
           sx={{
             '& .MuiTextField-root': { m: 1, width: '25ch' },
           }}
-          noValidate
-          autoComplete="off"
         >
           <TextField
             id="outlined"
@@ -332,12 +320,9 @@ export function AddContractDialog(open: any, close: any) {
           />
         </Box>
         <Box
-          component="form"
           sx={{
             '& .MuiTextField-root': { m: 1, width: '25ch' },
           }}
-          noValidate
-          autoComplete="off"
         >
           <TextField
             id="outlined"
@@ -356,12 +341,9 @@ export function AddContractDialog(open: any, close: any) {
 
 
         <Box
-          component="form"
           sx={{
             '& .MuiTextField-root': { m: 1, width: '25ch' },
           }}
-          noValidate
-          autoComplete="off"
         >
           <TextField
             id="outlined"
@@ -371,12 +353,9 @@ export function AddContractDialog(open: any, close: any) {
         </Box>
 
         <Box
-          component="form"
           sx={{
             '& .MuiTextField-root': { m: 1, width: '25ch' },
           }}
-          noValidate
-          autoComplete="off"
         >
           <TextField
             id="outlined"
@@ -393,12 +372,9 @@ export function AddContractDialog(open: any, close: any) {
         </Box>
 
         <Box
-          component="form"
           sx={{
             '& .MuiTextField-root': { m: 1, width: '25ch' },
           }}
-          noValidate
-          autoComplete="off"
         >
           <TextField
             id="outlined"
@@ -413,12 +389,9 @@ export function AddContractDialog(open: any, close: any) {
           />
         </Box>
         <Box
-          component="form"
           sx={{
             '& .MuiTextField-root': { m: 1, width: '25ch' },
           }}
-          noValidate
-          autoComplete="off"
         >
           <TextField
             id="outlined"

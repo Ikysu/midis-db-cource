@@ -51,6 +51,22 @@ export function Tbl(props: any) {
       break;
   }
 
+  function sorter() {
+    const filters = filter.split(" ") // ["cid:1","did:2"]
+    return data.filter((row: any)=>{
+      let out = true;
+      for(const filter of filters) {
+        if(row.find.indexOf(filter) == -1) {
+          out=false;
+          break;
+        }
+      }
+      return out;
+    })
+  }
+  
+  
+
   return (
     <React.Fragment>
       <Paper
@@ -86,7 +102,7 @@ export function Tbl(props: any) {
             <TableRow>{rows}</TableRow>
           </TableHead>
           <TableBody>
-            {data.filter((row:any)=>row.find.indexOf(filter) != -1).map((row: any, index: number) => {
+            {sorter().map((row: any, index: number) => {
               return (<TableRow key={index}>{row.data}</TableRow>)
             })}
           </TableBody>

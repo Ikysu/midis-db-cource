@@ -51,12 +51,9 @@ export function Dealer() {
       </Typography>
 
       <Box
-        component="form"
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
         }}
-        noValidate
-        autoComplete="off"
       >
       <TextField
         id="outlined"
@@ -88,12 +85,9 @@ export function Dealer() {
       </Box>
 
       <Box
-        component="form"
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
         }}
-        noValidate
-        autoComplete="off"
       >
 
         <TextField
@@ -119,12 +113,9 @@ export function Dealer() {
       
 
       <Box
-        component="form"
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
         }}
-        noValidate
-        autoComplete="off"
       ><Button onClick={save}>Save</Button></Box>
     </>
   ) : (
@@ -200,12 +191,9 @@ export function AddDealerDialog(open: any, close: any) {
       <DialogTitle>Добавить дилера</DialogTitle>
       <DialogContent>
       <Box
-        component="form"
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
         }}
-        noValidate
-        autoComplete="off"
       >
         <TextField
           id="outlined"
@@ -221,12 +209,9 @@ export function AddDealerDialog(open: any, close: any) {
       </Box>
 
       <Box
-        component="form"
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
         }}
-        noValidate
-        autoComplete="off"
       >
         <TextField
           id="outlined"
@@ -241,12 +226,9 @@ export function AddDealerDialog(open: any, close: any) {
       </Box>
 
       <Box
-        component="form"
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
         }}
-        noValidate
-        autoComplete="off"
       >
         <TextField
           id="outlined"
