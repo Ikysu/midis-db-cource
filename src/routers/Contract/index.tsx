@@ -1,8 +1,8 @@
-import { TableCell, TextField, Typography, Box } from "@mui/material";
+import { TableCell, TextField, Typography, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Tbl from "../../component/Tbl";
-import { getContract, getContractList } from "../../lib/api";
+import { addContract, getContract, getContractList, updateContract } from "../../lib/api";
 
 
 export interface IConrtact {
@@ -25,6 +25,8 @@ export function Contract() {
   const { contract_id } = useParams();
 	const [data, setData] = useState<IConrtact | null>(null);
 
+  let edit:any = {};
+
   if(contract_id && +contract_id > 0) {
     if (!data) {
       getContract(+contract_id).then((data: any) => {
@@ -39,19 +41,48 @@ export function Contract() {
     navigate("/")
   }
 
+  function save() {
+    if(contract_id) updateContract({
+      id:+contract_id,
+      ...edit
+    }).then(e=>{
+      if(e) alert("Успешно!")
+    })
+  }
+
   return data ? (
     <>
       <Typography variant="h3" component="h4" color="white" mb="1em">
         Контракт #{data.id}
       </Typography>
 
-      <Typography variant="h5" component="h6" color="white" mb="1em">
-        Клиент <Link to={`/client/${data.клиентId}`}>#{data.клиентId}</Link>
-      </Typography>
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { m: 1, width: '25ch' },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          id="outlined"
+          label="ID Клиента"
+          defaultValue={data.клиентId}
+          onChange={(e) => {
+            edit.клиентId=e.target.value
+          }}
+        />
 
-      <Typography variant="h5" component="h6" color="white" mb="1em">
-        Дилер <Link to={`/dealer/${data.дилерId}`}>#{data.дилерId}</Link>
-      </Typography>
+        <TextField
+          id="outlined"
+          label="ID Дилера"
+          defaultValue={data.дилерId}
+          onChange={(e) => {
+            edit.дилерId=e.target.value
+          }}
+        />
+      </Box>
+      
 
       <Box
         component="form"
@@ -62,24 +93,23 @@ export function Contract() {
         autoComplete="off"
       >
       <TextField
-        disabled
-        id="outlined-disabled"
+        id="outlined"
+        type="date"
         label="Дата заключения договора"
-        value={new Date(data.дата_заключения_договора).toLocaleDateString()}
+        value={new Date(data.дата_заключения_договора)}
+        onChange={(e) => {
+          edit.дата_заключения_договора=`FROM_UNIXTIME(${Math.floor((+new Date(e.target.value))/1000)})`
+        }}
       />
 
       <TextField
-        disabled
-        id="outlined-disabled"
+        id="outlined"
+        type="date"
         label="Дата продажи"
-        value={new Date(data.дата_продажи).toLocaleDateString()}
-      />
-
-      <TextField
-        disabled
-        id="outlined-disabled"
-        label="Дата выпуска"
-        value={new Date(data.дата_выпуска).toLocaleDateString()}
+        value={new Date(data.дата_продажи)}
+        onChange={(e) => {
+          edit.дата_продажи=`FROM_UNIXTIME(${Math.floor((+new Date(e.target.value))/1000)})`
+        }}
       />
 
       </Box>
@@ -92,26 +122,32 @@ export function Contract() {
         noValidate
         autoComplete="off"
       >
+        <TextField
+          id="outlined"
+          type="date"
+          label="Дата выпуска"
+          value={new Date(data.дата_выпуска)}
+          onChange={(e) => {
+            edit.дата_выпуска=`FROM_UNIXTIME(${Math.floor((+new Date(e.target.value))/1000)})`
+          }}
+        />
         
         <TextField
-          disabled
-          id="outlined-disabled"
+          id="outlined"
           label="Марка автомобиля"
-          value={data.марка_автомобиля}
+          defaultValue={data.марка_автомобиля}
+          onChange={(e) => {
+            edit.марка_автомобиля=e.target.value
+          }}
         />
 
         <TextField
-          disabled
-          id="outlined-disabled"
+          id="outlined"
           label="Пробег"
-          value={data.пробег}
-        />
-
-        <TextField
-          disabled
-          id="outlined-disabled"
-          label="Цена продажи"
-          value={data.цена_продажи+"р."}
+          defaultValue={data.пробег}
+          onChange={(e) => {
+            edit.пробег=+e.target.value
+          }}
         />
 
       </Box>
@@ -124,24 +160,61 @@ export function Contract() {
         noValidate
         autoComplete="off"
       >
+
+        <TextField
+          id="outlined"
+          label="Цена продажи"
+          defaultValue={data.цена_продажи+"р."}
+          onChange={(e) => {
+            edit.цена_продажи=+e.target.value
+          }}
+        />
         
         <TextField
-          disabled
-          id="outlined-disabled"
+          id="outlined"
           label="Размер комиссионных"
-          value={data.размер_комиссионных+"р."}
+          defaultValue={data.размер_комиссионных+"р."}
+          onChange={(e) => {
+            edit.размер_комиссионных=+e.target.value
+          }}
         />
 
-      <Typography variant="h5" component="h6" color="white" mb="1em">
-        Примечание: {data.примечание}
-      </Typography>
-
+        
       </Box>
+
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { m: 1 },
+        }}
+        noValidate
+        autoComplete="off"
+        fullWidth
+      ><TextField
+          fullWidth 
+          id="outlined"
+          label="Примечание"
+          defaultValue={data.примечание}
+          onChange={(e) => {
+            edit.примечание=+e.target.value
+          }}
+        /></Box>
       
 
 
 
       <img src={data.фото_автомобиля} width="500px" />
+      
+
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { m: 1, width: '25ch' },
+        }}
+        noValidate
+        autoComplete="off"
+      ><Button onClick={save}>Save</Button></Box>
+      
     </>
   ) : (
     <></>
@@ -195,4 +268,177 @@ export function ContractList() {
       }
     />
   );
+}
+
+export function AddContractDialog(open: any, close: any) {
+  const [клиентId, setКлиентId] = useState<string>("");
+  const [дилерId, setДилерId] = useState<string>("");
+  const [дата_заключения_договора, setДЗД] = useState<string>("");
+  const [дата_выпуска, setДВ] = useState<string>("");
+  const [дата_продажи, setДП] = useState<string>("");
+  const [фото_автомобиля, setФА] = useState<string>("");
+  const [марка_автомобиля, setМА] = useState<string>("");
+  const [пробег, setПробег] = useState<string>("");
+  const [цена_продажи, setЦП] = useState<string>("");
+  const [размер_комиссионных, setРК] = useState<string>("");
+  const [примечание, setПримечание] = useState<string>("");
+
+  // FROM_UNIXTIME
+
+  function addQuery() {
+
+    addContract({
+      клиентId:+клиентId,
+      дилерId:+дилерId,
+      дата_заключения_договора:дата_заключения_договора ? `FROM_UNIXTIME(${Math.floor((+new Date(дата_заключения_договора))/1000)})` : "FROM_UNIXTIME(0)",
+      дата_продажи:дата_продажи ? `FROM_UNIXTIME(${Math.floor((+new Date(дата_продажи))/1000)})` : "FROM_UNIXTIME(0)",
+      дата_выпуска:дата_выпуска ? `FROM_UNIXTIME(${Math.floor((+new Date(дата_выпуска))/1000)})` : "FROM_UNIXTIME(0)",
+      фото_автомобиля,
+      марка_автомобиля,
+      пробег:+пробег,
+      цена_продажи:+цена_продажи,
+      размер_комиссионных:+размер_комиссионных,
+      примечание,
+    }).then(e=>{
+      if(e) alert("Успешно!")
+      if(e) window.location.reload()
+    })
+
+    close()
+  }
+
+  return (
+    <Dialog open={open} onClose={close}>
+      <DialogTitle>Добавить контракт</DialogTitle>
+      <DialogContent>
+        <Box
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { m: 1, width: '25ch' },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="outlined"
+            label="КлиентId"
+            onChange={e => setКлиентId(e.target.value)}
+          />
+
+          <TextField
+            id="outlined"
+            label="ДилерId"
+            onChange={e => setДилерId(e.target.value)}
+          />
+        </Box>
+        <Box
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { m: 1, width: '25ch' },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="outlined"
+            type="date"
+            label="Дата заключения договора"
+            onChange={e => setДЗД(e.target.value)}
+          />
+
+          <TextField
+            id="outlined"
+            type="date"
+            label="Дата продажи"
+            onChange={e => setДП(e.target.value)}
+          />
+        </Box>
+
+
+        <Box
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { m: 1, width: '25ch' },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="outlined"
+            label="Фото автомобиля"
+            onChange={e => setФА(e.target.value)}
+          />
+        </Box>
+
+        <Box
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { m: 1, width: '25ch' },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="outlined"
+            label="Марка автомобиля"
+            onChange={e => setМА(e.target.value)}
+          />
+
+          <TextField
+            id="outlined"
+            type="date"
+            label="Дата выпуска"
+            onChange={e => setДВ(e.target.value)}
+          />
+        </Box>
+
+        <Box
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { m: 1, width: '25ch' },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="outlined"
+            label="Пробег"
+            onChange={e => setПробег(e.target.value)}
+          />
+
+          <TextField
+            id="outlined"
+            label="Цена продажи"
+            onChange={e => setЦП(e.target.value)}
+          />
+        </Box>
+        <Box
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { m: 1, width: '25ch' },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="outlined"
+            label="Размер комиссионных"
+            onChange={e => setРК(e.target.value)}
+          />
+
+          <TextField
+            id="outlined"
+            label="Примечание"
+            onChange={e => setПримечание(e.target.value)}
+          />
+        </Box>
+
+
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={close}>Отмена</Button>
+        <Button onClick={addQuery}>Добавить</Button>
+      </DialogActions>
+    </Dialog>
+  )
 }

@@ -1,7 +1,7 @@
-import { TableCell, Box, Typography, TextField } from "@mui/material";
+import { TableCell, Box, Typography, TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { useState } from "react";
 import Tbl from "../../component/Tbl";
-import { getDealerList, getDealer } from "../../lib/api";
+import { getDealerList, getDealer, addDealer, updateDealer } from "../../lib/api";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 export interface IDealer {
@@ -19,6 +19,8 @@ export function Dealer() {
   const { dealer_id } = useParams();
 	const [data, setData] = useState<IDealer | null>(null);
 
+  let edit:any = {};
+
   if(dealer_id && +dealer_id > 0) {
     if (!data) {
       getDealer(+dealer_id).then((data: any) => {
@@ -31,6 +33,15 @@ export function Dealer() {
     }
   }else{
     navigate("/")
+  }
+
+  function save() {
+    if(dealer_id) updateDealer({
+      id:+dealer_id,
+      ...edit
+    }).then(e=>{
+      if(e) alert("Успешно!")
+    })
   }
 
   return data ? (
@@ -48,24 +59,30 @@ export function Dealer() {
         autoComplete="off"
       >
       <TextField
-        disabled
-        id="outlined-disabled"
+        id="outlined"
         label="Фамилия"
-        value={data.фамилия}
+        defaultValue={data.фамилия}
+        onChange={(e) => {
+          edit.фамилия=e.target.value
+        }}
       />
 
       <TextField
-        disabled
-        id="outlined-disabled"
+        id="outlined"
         label="Имя"
-        value={data.имя}
+        defaultValue={data.имя}
+        onChange={(e) => {
+          edit.имя=e.target.value
+        }}
       />
 
       <TextField
-        disabled
-        id="outlined-disabled"
+        id="outlined"
         label="Отчество"
-        value={data.отчество}
+        defaultValue={data.отчество}
+        onChange={(e) => {
+          edit.отчество=e.target.value
+        }}
       />
 
       </Box>
@@ -80,20 +97,35 @@ export function Dealer() {
       >
 
         <TextField
-          disabled
-          id="outlined-disabled"
+          id="outlined"
           label="Адрес"
-          value={data.адрес}
+          defaultValue={data.адрес}
+          onChange={(e) => {
+            edit.адрес=e.target.value
+          }}
         />
 
         <TextField
-          disabled
-          id="outlined-disabled"
+          id="outlined"
           label="Телефон"
-          value={data.телефон}
+          defaultValue={data.телефон}
+          onChange={(e) => {
+            edit.телефон=e.target.value
+          }}
         />
 
       </Box>
+
+      
+
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { m: 1, width: '25ch' },
+        }}
+        noValidate
+        autoComplete="off"
+      ><Button onClick={save}>Save</Button></Box>
     </>
   ) : (
     <></>
@@ -138,3 +170,100 @@ export function DealerList() {
   );
 }
 
+export function AddDealerDialog(open: any, close: any) {
+  const [имя, setИмя] = useState<string>("");
+  const [фамилия, setФамилия] = useState<string>("");
+  const [отчество, setОтчество] = useState<string>("");
+  const [фотография, setФотография] = useState<string>("");
+  const [адрес, setАдрес] = useState<string>("");
+  const [телефон, setТелефон] = useState<string>("");
+
+  function addQuery() {
+
+    addDealer({
+      имя,
+      фамилия,
+      отчество,
+      фотография,
+      адрес,
+      телефон,
+    }).then(e=>{
+      if(e) alert("Успешно!")
+      if(e) window.location.reload()
+    })
+
+    close()
+  }
+
+  return (
+    <Dialog open={open} onClose={close}>
+      <DialogTitle>Добавить дилера</DialogTitle>
+      <DialogContent>
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { m: 1, width: '25ch' },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          id="outlined"
+          label="Фамилия"
+          onChange={e => setФамилия(e.target.value)}
+        />
+
+        <TextField
+          id="outlined"
+          label="Имя"
+          onChange={e => setИмя(e.target.value)}
+        />
+      </Box>
+
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { m: 1, width: '25ch' },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          id="outlined"
+          label="Отчество"
+          onChange={e => setОтчество(e.target.value)}
+        />
+        <TextField
+          id="outlined"
+          label="Фотография ()"
+          onChange={e => setФотография(e.target.value)}
+        />
+      </Box>
+
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { m: 1, width: '25ch' },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          id="outlined"
+          label="Адрес"
+          onChange={e => setАдрес(e.target.value)}
+        />
+        <TextField
+          id="outlined"
+          label="Телефон"
+          onChange={e => setТелефон(e.target.value)}
+        />
+      </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={close}>Отмена</Button>
+        <Button onClick={addQuery}>Добавить</Button>
+      </DialogActions>
+    </Dialog>
+  )
+}

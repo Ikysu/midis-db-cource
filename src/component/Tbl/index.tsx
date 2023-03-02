@@ -19,6 +19,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import {AddClientDialog} from '../../routers/Client'
+import {AddDealerDialog} from '../../routers/Dealer'
+import {AddContractDialog} from '../../routers/Contract'
 
 export function Tbl(props: any) {
   const { rows, data, whatSearch }: { rows: any; data: any, whatSearch: string } = props;
@@ -42,10 +44,10 @@ export function Tbl(props: any) {
       dialogtype=AddClientDialog(open, handleClose);
       break;
     case "contract":
-      dialogtype=AddClientDialog(open, handleClose);
+      dialogtype=AddContractDialog(open, handleClose);
       break;
     case "dealer":
-      dialogtype=AddClientDialog(open, handleClose);
+      dialogtype=AddDealerDialog(open, handleClose);
       break;
   }
 

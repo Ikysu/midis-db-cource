@@ -12,6 +12,9 @@ async function req(
     const Response = await fetch(APIEndPoint + url, {
       method,
       body: data ? JSON.stringify(data) : null,
+      headers:{
+        "content-type":"application/json"
+      }
     });
     if (Response.status) status = Response.status;
     if (Response.statusText) error = Response.statusText;
@@ -29,8 +32,8 @@ async function req(
   }
 }
 
-async function lr(method: string, url: string, data: any = undefined) {
-  const response = await req("PUT", "/dealer", data);
+async function lr(method: any, url: string, data: any = undefined) {
+  const response = await req(method, url, data);
   if (!response.status) {
     return response;
   } else {
@@ -39,8 +42,12 @@ async function lr(method: string, url: string, data: any = undefined) {
   }
 } 
 
-export async function addDealer() {
-  return lr("PUT", "/dealer");
+export async function updateDealer(data:any) {
+  return lr("POST", "/dealer", data);
+}
+
+export async function addDealer(data:any) {
+  return lr("PUT", "/dealer", data);
 }
 
 export async function getDealerList() {
@@ -52,12 +59,29 @@ export async function getDealer(id: number) {
 }
 
 
+export async function updateClient(data:any) {
+  return lr("POST", "/client", data);
+}
+
+export async function addClient(data:any) {
+  return lr("PUT", "/client", data);
+}
+
 export async function getClientList() {
   return lr("GET", "/client/list");
 }
 
 export async function getClient(id: number) {
   return lr("GET", "/client?id="+id);
+}
+
+
+export async function updateContract(data:any) {
+  return lr("POST", "/contract", data);
+}
+
+export async function addContract(data:any) {
+  return lr("PUT", "/contract", data);
 }
 
 export async function getContractList() {

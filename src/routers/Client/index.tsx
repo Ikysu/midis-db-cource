@@ -2,7 +2,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { TableCell, Typography, Box, TextField, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { useState } from "react";
 import Tbl from "../../component/Tbl";
-import { getClient, getClientList } from "../../lib/api";
+import { getClient, getClientList, addClient, updateClient } from "../../lib/api";
 
 export interface IClient {
   id: number;
@@ -18,6 +18,8 @@ export function Client() {
   const navigate = useNavigate();
   const { client_id } = useParams();
 	const [data, setData] = useState<IClient | null>(null);
+  
+  let edit:any = {};
 
   if(client_id && +client_id > 0) {
     if (!data) {
@@ -31,6 +33,15 @@ export function Client() {
     }
   }else{
     navigate("/")
+  }
+
+  function save() {
+    if(client_id) updateClient({
+      id:+client_id,
+      ...edit
+    }).then(e=>{
+      if(e) alert("Успешно!")
+    })
   }
 
   return data ? (
@@ -48,24 +59,30 @@ export function Client() {
         autoComplete="off"
       >
       <TextField
-        disabled
-        id="outlined-disabled"
+        id="outlined"
         label="Фамилия"
-        value={data.фамилия}
+        defaultValue={data.фамилия}
+        onChange={(e) => {
+          edit.фамилия=e.target.value
+        }}
       />
 
       <TextField
-        disabled
-        id="outlined-disabled"
+        id="outlined"
         label="Имя"
-        value={data.имя}
+        defaultValue={data.имя}
+        onChange={e => {
+          edit.имя=e.target.value
+        }}
       />
 
       <TextField
-        disabled
-        id="outlined-disabled"
+        id="outlined"
         label="Отчество"
-        value={data.отчество}
+        defaultValue={data.отчество}
+        onChange={e => {
+          edit.отчество=e.target.value
+        }}
       />
 
       </Box>
@@ -80,27 +97,42 @@ export function Client() {
       >
         
         <TextField
-          disabled
-          id="outlined-disabled"
+          id="outlined"
           label="Город"
-          value={data.город}
+          defaultValue={data.город}
+          onChange={e => {
+            edit.город=e.target.value
+          }}
         />
 
         <TextField
-          disabled
-          id="outlined-disabled"
+          id="outlined"
           label="Адрес"
-          value={data.адрес}
+          defaultValue={data.адрес}
+          onChange={e => {
+            edit.адрес=e.target.value
+          }}
         />
 
         <TextField
-          disabled
-          id="outlined-disabled"
+          id="outlined"
           label="Телефон"
-          value={data.телефон}
+          defaultValue={data.телефон}
+          onChange={e => {
+            edit.телефон=e.target.value
+          }}
         />
 
       </Box>
+
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { m: 1, width: '25ch' },
+        }}
+        noValidate
+        autoComplete="off"
+      ><Button onClick={save}>Save</Button></Box>
     </>
   ) : (
     <></>
@@ -156,6 +188,24 @@ export function AddClientDialog(open: any, close: any) {
   const [город, setГород] = useState<string>("");
   const [адрес, setАдрес] = useState<string>("");
   const [телефон, setТелефон] = useState<string>("");
+
+  function addQuery() {
+
+    addClient({
+      имя,
+      фамилия,
+      отчество,
+      город,
+      адрес,
+      телефон,
+    }).then(e=>{
+      if(e) alert("Успешно!")
+      if(e) window.location.reload()
+    })
+
+    close()
+  }
+
   return (
     <Dialog open={open} onClose={close}>
       <DialogTitle>Добавить клиента</DialogTitle>
@@ -223,9 +273,7 @@ export function AddClientDialog(open: any, close: any) {
       </DialogContent>
       <DialogActions>
         <Button onClick={close}>Отмена</Button>
-        <Button onClick={()=>{
-          
-        }}>Добавить</Button>
+        <Button onClick={addQuery}>Добавить</Button>
       </DialogActions>
     </Dialog>
   )
