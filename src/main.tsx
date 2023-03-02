@@ -1,21 +1,17 @@
-import React, { useCallback } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  useNavigate,
-} from "react-router-dom";
-import {
-  Search,
-  Favorite,
-  Assignment,
-  People,
-  ShoppingCart,
-} from "@mui/icons-material";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Assignment, People, ShoppingCart } from "@mui/icons-material";
 
 import { Navigator } from "./component";
-import { ContractList, Client, ClientList, DealerList, Dealer, Contract } from "./routers";
+import {
+  ContractList,
+  Client,
+  ClientList,
+  DealerList,
+  Dealer,
+  Contract,
+} from "./routers";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 export type Item = {
@@ -35,11 +31,10 @@ export const mainList: Item[] = [
         path: "/",
       },
       {
-        path: '/contract/:contract_id',
+        path: "/contract/:contract_id",
         element: <Navigator element={<Contract />} title={"Контракт"} />,
       },
-    ]
-    
+    ],
   },
   {
     icon: <ShoppingCart />,
@@ -51,10 +46,10 @@ export const mainList: Item[] = [
         path: "/dealers",
       },
       {
-        path: '/dealer/:dealer_id',
+        path: "/dealer/:dealer_id",
         element: <Navigator element={<Dealer />} title={"Дилер"} />,
       },
-    ]
+    ],
   },
   {
     icon: <People />,
@@ -63,13 +58,13 @@ export const mainList: Item[] = [
       {
         index: true,
         element: <Navigator element={<ClientList />} title={"Клиенты"} />,
-        path: "/clients"
+        path: "/clients",
       },
       {
-        path: '/client/:client_id',
+        path: "/client/:client_id",
         element: <Navigator element={<Client />} title={"Клиент"} />,
       },
-    ]
+    ],
   },
 ];
 
@@ -79,9 +74,7 @@ const darkTheme = createTheme({
   },
 });
 
-const router = createBrowserRouter(
-  mainList
-);
+const router = createBrowserRouter(mainList);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <ThemeProvider theme={darkTheme}>

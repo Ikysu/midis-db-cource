@@ -1,8 +1,7 @@
-export const APIEndPoint =
-  "https://vite-api.iky.su";
+export const APIEndPoint = "https://vite-api.iky.su";
 
 async function req(
-  method: "POST" | "PUT" | "GET" | "DELETE",
+  method: "POST" | "PUT" | "GET",
   url: string,
   data: any = null
 ) {
@@ -12,9 +11,9 @@ async function req(
     const Response = await fetch(APIEndPoint + url, {
       method,
       body: data ? JSON.stringify(data) : null,
-      headers:{
-        "content-type":"application/json"
-      }
+      headers: {
+        "content-type": "application/json",
+      },
     });
     if (Response.status) status = Response.status;
     if (Response.statusText) error = Response.statusText;
@@ -40,13 +39,13 @@ async function lr(method: any, url: string, data: any = undefined) {
     alert(`${response.status} | ${response.error}`);
     return false;
   }
-} 
+}
 
-export async function updateDealer(data:any) {
+export async function updateDealer(data: any) {
   return lr("POST", "/dealer", data);
 }
 
-export async function addDealer(data:any) {
+export async function addDealer(data: any) {
   return lr("PUT", "/dealer", data);
 }
 
@@ -55,15 +54,14 @@ export async function getDealerList() {
 }
 
 export async function getDealer(id: number) {
-  return lr("GET", "/dealer?id="+id);
+  return lr("GET", "/dealer?id=" + id);
 }
 
-
-export async function updateClient(data:any) {
+export async function updateClient(data: any) {
   return lr("POST", "/client", data);
 }
 
-export async function addClient(data:any) {
+export async function addClient(data: any) {
   return lr("PUT", "/client", data);
 }
 
@@ -72,15 +70,14 @@ export async function getClientList() {
 }
 
 export async function getClient(id: number) {
-  return lr("GET", "/client?id="+id);
+  return lr("GET", "/client?id=" + id);
 }
 
-
-export async function updateContract(data:any) {
+export async function updateContract(data: any) {
   return lr("POST", "/contract", data);
 }
 
-export async function addContract(data:any) {
+export async function addContract(data: any) {
   return lr("PUT", "/contract", data);
 }
 
@@ -89,5 +86,5 @@ export async function getContractList() {
 }
 
 export async function getContract(id: number) {
-  return lr("GET", "/contract?id="+id);
+  return lr("GET", "/contract?id=" + id);
 }
